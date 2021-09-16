@@ -1,13 +1,21 @@
 import taskApis from '../apis/task'
+import types from '../CONSTANTS/task'
 
 class taskActions {
-   fetchListTask = () => dispatch =>
+   fetchListTask = () => ({ type: types.FETCH_TASK })
+   fetchListTaskSucess = data => ({ type: types.FETCH_TASK_SUCCESS, payload: { data } })
+   fetchListTaskfail = error => ({ type: types.FETCH_TASK_FAIL, payload: { error } })
+   fetchListTaskRequest = () => dispatch => {
+      dispatch(this.fetchListTask())
       taskApis
          .getList()
-         .then(data => {
-            console.log('data: ', data)
+         .then(({ data }) => {
+            dispatch(this.fetchListTaskSucess(data))
          })
-         .catch(error => console.log(error))
+         .catch(error => {
+            dispatch(this.fetchListTaskfail(error))
+         })
+   }
 }
 
 export default new taskActions()

@@ -5,31 +5,10 @@ import { bindActionCreators } from 'redux'
 import { STATUSES } from '../../CONSTANTS'
 import taskActions from '../../actions/task'
 import styles from './styles'
-import { withStyles, Grid, Button } from '@material-ui/core'
+import { withStyles, Grid, Button, Box } from '@material-ui/core'
 import TaskList from '../../components/TaskList'
 import TaskForm from '../../components/TaskForm'
 import AddIcon from '@material-ui/icons/Add'
-
-const taskList = [
-   {
-      id: 1,
-      title: 'Html',
-      description: 'learning everything about html',
-      status: 0
-   },
-   {
-      id: 2,
-      title: 'Css',
-      description: 'learning everything about css',
-      status: 1
-   },
-   {
-      id: 3,
-      title: 'Js',
-      description: 'learning everything about js',
-      status: 2
-   }
-]
 
 class TaskBoard extends Component {
    state = {
@@ -38,11 +17,12 @@ class TaskBoard extends Component {
 
    componentDidMount() {
       const { taskActionCreators } = this.props
-      const { fetchListTask } = taskActionCreators
-      fetchListTask()
+      const { fetchListTaskRequest } = taskActionCreators
+      fetchListTaskRequest()
    }
 
    renderTaskBoard = () => {
+      let { taskList } = this.props
       let xhtml = (
          <Grid container spacing={2}>
             {STATUSES.map(status => {
@@ -64,7 +44,6 @@ class TaskBoard extends Component {
 
    renderFormDialog = () => {
       const { isOpen } = this.state
-
       return <TaskForm isOpen={isOpen} handleClose={this.handleClose} />
    }
 
@@ -81,6 +60,11 @@ class TaskBoard extends Component {
                <AddIcon />
                Add new work
             </Button>
+            <Box ml='1'>
+               <Button variant='contained' color='primary' onClick={this.showToast}>
+                  Toast
+               </Button>
+            </Box>
             {this.renderTaskBoard()}
             {this.renderFormDialog()}
          </div>
@@ -91,11 +75,12 @@ class TaskBoard extends Component {
 TaskBoard.propTypes = {
    classes: PropTypes.object,
    taskActionCreators: PropTypes.shape({
-      fetchListTask: PropTypes.func
-   })
+      fetchListTaskRequest: PropTypes.func
+   }),
+   taskList: PropTypes.array
 }
 
-const mapStateToProps = state => ({ tasks: state.tasks })
+const mapStateToProps = state => ({ taskList: state.task.taskList })
 
 const mapDispatchToProps = dispatch => ({
    taskActionCreators: bindActionCreators(taskActions, dispatch)
