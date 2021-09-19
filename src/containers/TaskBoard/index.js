@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { STATUSES } from '../../CONSTANTS'
 import taskActions from '../../actions/task'
 import styles from './styles'
-import { withStyles, Grid, Button, Box } from '@material-ui/core'
+import { withStyles, Grid, Button } from '@material-ui/core'
 import TaskList from '../../components/TaskList'
 import TaskForm from '../../components/TaskForm'
 import AddIcon from '@material-ui/icons/Add'
@@ -60,11 +60,6 @@ class TaskBoard extends Component {
                <AddIcon />
                Add new work
             </Button>
-            <Box ml='1'>
-               <Button variant='contained' color='primary' onClick={this.showToast}>
-                  Toast
-               </Button>
-            </Box>
             {this.renderTaskBoard()}
             {this.renderFormDialog()}
          </div>
