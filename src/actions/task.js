@@ -1,21 +1,15 @@
 // import taskApis from '../apis/task'
 import types from '../CONSTANTS/task'
 
-class taskActions {
+class TaskActions {
+   // fetch task from api
    fetchListTask = () => ({ type: types.FETCH_TASK })
    fetchListTaskSucess = data => ({ type: types.FETCH_TASK_SUCCESS, payload: { data } })
    fetchListTaskFail = error => ({ type: types.FETCH_TASK_FAIL, payload: { error } })
-   // fetchListTaskRequest = () => dispatch => {
-   //    dispatch(this.fetchListTask())
-   //    taskApis
-   //       .getList()
-   //       .then(({ data }) => {
-   //          dispatch(this.fetchListTaskSucess(data))
-   //       })
-   //       .catch(error => {
-   //          dispatch(this.fetchListTaskFail(error))
-   //       })
-   // }
+
+   // search task from state
+   searchTask = keyword => ({ type: types.SEARCH_TASK, payload: { keyword } })
+   searchTaskSuccess = data => ({ type: types.SEARCH_TASK_SUCCESS, payload: { data } })
 }
 
-export default new taskActions()
+export default new TaskActions()

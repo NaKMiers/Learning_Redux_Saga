@@ -9,17 +9,18 @@ import { withStyles, Grid, Button } from '@material-ui/core'
 import TaskList from '../../components/TaskList'
 import TaskForm from '../../components/TaskForm'
 import AddIcon from '@material-ui/icons/Add'
+import SearchBox from '../../components/SearchBox'
 
 class TaskBoard extends Component {
    state = {
       isOpen: false
    }
 
-   // componentDidMount() {
-   //    const { taskActionCreators } = this.props
-   //    const { fetchListTask } = taskActionCreators
-   //    fetchListTask()
-   // }
+   componentDidMount() {
+      const { taskActionCreators } = this.props
+      const { fetchListTask } = taskActionCreators
+      fetchListTask()
+   }
 
    renderTaskBoard = () => {
       let { taskList } = this.props
@@ -47,10 +48,19 @@ class TaskBoard extends Component {
       return <TaskForm isOpen={isOpen} handleClose={this.handleClose} />
    }
 
-   loadData = () => {
+   handleChange = e => {
       const { taskActionCreators } = this.props
-      const { fetchListTask } = taskActionCreators
-      fetchListTask()
+      const { searchTask } = taskActionCreators
+
+      let { value } = e.target
+      searchTask(value)
+   }
+
+   renderSearchBox = () => {
+      let xhtml = null
+      xhtml = <SearchBox handleChange={this.handleChange} />
+
+      return xhtml
    }
 
    render() {
@@ -61,20 +71,12 @@ class TaskBoard extends Component {
                className={classes.button}
                variant='contained'
                color='primary'
-               onClick={this.loadData}
-               style={{ marginRight: '8px' }}
-            >
-               Load Data
-            </Button>
-            <Button
-               className={classes.button}
-               variant='contained'
-               color='primary'
                onClick={this.handleOpen}
             >
                <AddIcon />
                Add new work
             </Button>
+            {this.renderSearchBox()}
             {this.renderTaskBoard()}
             {this.renderFormDialog()}
          </div>
@@ -85,7 +87,8 @@ class TaskBoard extends Component {
 TaskBoard.propTypes = {
    classes: PropTypes.object,
    taskActionCreators: PropTypes.shape({
-      fetchListTask: PropTypes.func
+      fetchListTask: PropTypes.func,
+      searchTask: PropTypes.func
    }),
    taskList: PropTypes.array
 }
