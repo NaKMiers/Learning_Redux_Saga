@@ -7,10 +7,10 @@ const theme = createTheme({
       error: '#f44336'
    },
    typography: {
-      fontFamily: 'Roboto'
+      fontFamily: 'Tahoma'
    },
    shape: {
-      borderRadius: 4,
+      borderRadius: 8,
       backgroundColor: '#ff9800',
       textColor: '#000',
       borderColor: '#ccc solid 2px'

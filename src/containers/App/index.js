@@ -9,6 +9,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from '../../commons/Theme'
 import TaskBoard from '../TaskBoard'
 import GlobalLoading from '../../components/GlobalLoading'
+import Modal from '../../components/Modal'
 
 const store = configureStore()
 
@@ -19,6 +20,7 @@ class App extends Component {
             <ThemeProvider theme={theme}>
                <ToastContainer autoClose={2000} />
                <GlobalLoading />
+               <Modal />
                <TaskBoard />
             </ThemeProvider>
          </Provider>

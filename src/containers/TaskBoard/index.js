@@ -4,18 +4,16 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { STATUSES } from '../../CONSTANTS'
 import taskActions from '../../actions/task'
+import modalActions from '../../actions/modal'
 import styles from './styles'
 import { withStyles, Grid, Button } from '@material-ui/core'
 import TaskList from '../../components/TaskList'
-import TaskForm from '../../components/TaskForm'
+import TaskForm from '../TaskForm'
 import AddIcon from '@material-ui/icons/Add'
 import SearchBox from '../../components/SearchBox'
+import Modal from '../../components/Modal'
 
 class TaskBoard extends Component {
-   state = {
-      isOpen: false
-   }
-
    componentDidMount() {
       const { taskActionCreators } = this.props
       const { fetchListTask } = taskActionCreators
@@ -28,7 +26,14 @@ class TaskBoard extends Component {
          <Grid container spacing={2}>
             {STATUSES.map(status => {
                const taskFiltered = taskList.filter(task => task.status === status.value)
-               return <TaskList key={status.value} tasks={taskFiltered} status={status} />
+               return (
+                  <TaskList
+                     key={status.value}
+                     tasks={taskFiltered}
+                     status={status}
+                     onEdit={this.hanleEditTask}
+                  />
+               )
             })}
          </Grid>
       )
@@ -36,16 +41,28 @@ class TaskBoard extends Component {
    }
 
    handleOpen = () => {
-      this.setState({ isOpen: true })
+      const { modalActionCreators, taskActionCreators } = this.props
+      const { setTaskEditing } = taskActionCreators
+      setTaskEditing(null)
+      const { showModal, changeModalTitle, changeModalContent } = modalActionCreators
+      showModal()
+      changeModalTitle('Add new work')
+      changeModalContent(<TaskForm />)
    }
 
-   handleClose = () => {
-      this.setState({ isOpen: false })
+   hanleEditTask = task => {
+      const { modalActionCreators, taskActionCreators } = this.props
+      const { setTaskEditing } = taskActionCreators
+      setTaskEditing(task)
+      const { showModal, changeModalTitle, changeModalContent } = modalActionCreators
+      showModal()
+      changeModalTitle('Edit work')
+      changeModalContent(<TaskForm />)
    }
 
    renderFormDialog = () => {
-      const { isOpen } = this.state
-      return <TaskForm isOpen={isOpen} handleClose={this.handleClose} />
+      const { isOpenModal } = this.props
+      return <Modal isOpen={isOpenModal} />
    }
 
    handleChange = e => {
@@ -88,15 +105,26 @@ TaskBoard.propTypes = {
    classes: PropTypes.object,
    taskActionCreators: PropTypes.shape({
       fetchListTask: PropTypes.func,
-      searchTask: PropTypes.func
+      searchTask: PropTypes.func,
+      setTaskEditing: PropTypes.func
+   }),
+   modalActionCreators: PropTypes.shape({
+      showModal: PropTypes.func,
+      hideModal: PropTypes.func,
+      changeModalTitle: PropTypes.func,
+      changeModalContent: PropTypes.func
    }),
    taskList: PropTypes.array
 }
 
-const mapStateToProps = state => ({ taskList: state.task.taskList })
+const mapStateToProps = state => ({
+   taskList: state.task.taskList,
+   isOpenModal: state.modal.showModal
+})
 
 const mapDispatchToProps = dispatch => ({
-   taskActionCreators: bindActionCreators(taskActions, dispatch)
+   taskActionCreators: bindActionCreators(taskActions, dispatch),
+   modalActionCreators: bindActionCreators(modalActions, dispatch)
 })
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TaskBoard))

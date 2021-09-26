@@ -1,9 +1,9 @@
-import ui from '../CONSTANTS/ui'
+import uiTypes from '../CONSTANTS/ui'
 
 class UiActions {
-   showLoading = () => ({ type: ui.SHOW_LOADING })
+   showLoading = () => ({ type: uiTypes.SHOW_LOADING })
 
-   hideLoading = () => ({ type: ui.HIDE_LOADING })
+   hideLoading = () => ({ type: uiTypes.HIDE_LOADING })
 }
 
 export default new UiActions()

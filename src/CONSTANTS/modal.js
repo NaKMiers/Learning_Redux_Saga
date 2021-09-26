@@ -1,0 +1,8 @@
+const modalTypes = {
+   SHOW_MODAL: 'SHOW_MODAL',
+   HIDE_MODAL: 'HIDE_MODAL',
+   CHANGE_MODAL_TITLE: 'CHANGE_MODAL_TITLE',
+   CHANGE_MODAL_CONTENT: 'CHANGE_MODAL_CONTENT'
+}
+
+export default modalTypes
