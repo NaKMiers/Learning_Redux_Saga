@@ -6,7 +6,7 @@ import { STATUSES } from '../../CONSTANTS'
 import taskActions from '../../actions/task'
 import modalActions from '../../actions/modal'
 import styles from './styles'
-import { withStyles, Grid, Button } from '@material-ui/core'
+import { withStyles, Grid, Button, Box } from '@material-ui/core'
 import TaskList from '../../components/TaskList'
 import TaskForm from '../TaskForm'
 import AddIcon from '@material-ui/icons/Add'
@@ -26,14 +26,18 @@ class TaskBoard extends Component {
          <Grid container spacing={2}>
             {STATUSES.map(status => {
                const taskFiltered = taskList.filter(task => task.status === status.value)
-               return (
-                  <TaskList
-                     key={status.value}
-                     tasks={taskFiltered}
-                     status={status}
-                     onEdit={this.hanleEditTask}
-                  />
-               )
+               if (taskFiltered.length > 0) {
+                  return (
+                     <TaskList
+                        key={status.value}
+                        tasks={taskFiltered}
+                        status={status}
+                        onEdit={this.hanleEditTask}
+                        onDelete={this.showModalDeleteTask}
+                     />
+                  )
+               }
+               return ''
             })}
          </Grid>
       )
@@ -58,6 +62,39 @@ class TaskBoard extends Component {
       showModal()
       changeModalTitle('Edit work')
       changeModalContent(<TaskForm />)
+   }
+
+   handleDeleteTask = task => {
+      const { taskActionCreators } = this.props
+      const { deleteTask } = taskActionCreators
+      deleteTask(task.id)
+   }
+
+   showModalDeleteTask = task => {
+      const { modalActionCreators, classes } = this.props
+      const { showModal, hideModal, changeModalTitle, changeModalContent } = modalActionCreators
+      showModal()
+      changeModalTitle('Do you want to still delete this work?')
+      changeModalContent(
+         <div className={classes.modalDeleteTask}>
+            <Box display='flex' flexDirection='row-reverse' mt={2}>
+               <Box ml={1}>
+                  <Button variant='contained' onClick={hideModal}>
+                     Cancel
+                  </Button>
+               </Box>
+               <Box ml={1}>
+                  <Button
+                     variant='contained'
+                     color='primary'
+                     onClick={() => this.handleDeleteTask(task)}
+                  >
+                     Delete
+                  </Button>
+               </Box>
+            </Box>
+         </div>
+      )
    }
 
    renderFormDialog = () => {
@@ -106,7 +143,8 @@ TaskBoard.propTypes = {
    taskActionCreators: PropTypes.shape({
       fetchListTask: PropTypes.func,
       searchTask: PropTypes.func,
-      setTaskEditing: PropTypes.func
+      setTaskEditing: PropTypes.func,
+      deleteTask: PropTypes.func
    }),
    modalActionCreators: PropTypes.shape({
       showModal: PropTypes.func,

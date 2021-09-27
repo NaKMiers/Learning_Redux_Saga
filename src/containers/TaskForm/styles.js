@@ -1,6 +1,6 @@
 const styles = theme => ({
    textField: {
-      marginTop: '8px',
+      marginTop: 8,
       width: '100%'
    },
    button: {

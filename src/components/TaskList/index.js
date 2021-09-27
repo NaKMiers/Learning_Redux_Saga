@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 class TaskList extends Component {
    render() {
-      const { classes, tasks, status, onEdit } = this.props
+      const { classes, tasks, status, onEdit, onDelete } = this.props
 
       return (
          <Grid key={status.value} item md={4}>
@@ -20,6 +20,7 @@ class TaskList extends Component {
                      status={status}
                      key={task.id}
                      onEdit={() => onEdit(task)}
+                     onDelete={() => onDelete(task)}
                   />
                ))}
             </div>
@@ -32,7 +33,8 @@ TaskList.propTypes = {
    classes: PropTypes.object,
    tasks: PropTypes.array,
    status: PropTypes.object,
-   onEdit: PropTypes.func
+   onEdit: PropTypes.func,
+   onDelete: PropTypes.func
 }
 
 export default withStyles(styles)(TaskList)

@@ -7,21 +7,17 @@ class AxiosService {
       this.instance = instance
    }
 
-   handleSuccess(res) {
-      return res
-   }
+   handleSuccess = res => res
 
-   handleError(error) {
-      return Promise.reject(error)
-   }
+   handleError = error => Promise.reject(error)
 
-   get(url) {
-      return this.instance.get(url)
-   }
+   get = url => this.instance.get(url)
 
-   post(url, body) {
-      return this.instance.post(url, body)
-   }
+   post = (url, body) => this.instance.post(url, body)
+
+   put = (url, body) => this.instance.put(url, body)
+
+   delete = url => this.instance.delete(url)
 }
 
 export default new AxiosService()
