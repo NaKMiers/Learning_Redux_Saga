@@ -1,4 +1,4 @@
-import { call, delay, fork, put, take, takeEvery, takeLatest, select } from 'redux-saga/effects'
+import { call, delay, put, takeEvery, takeLatest, select } from 'redux-saga/effects'
 import modalActions from '../actions/modal'
 import taskActions from '../actions/task'
 import uiActions from '../actions/ui'
