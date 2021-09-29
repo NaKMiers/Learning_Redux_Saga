@@ -1,26 +1,68 @@
 import {
    AppBar,
    Box,
-   Button,
    IconButton,
+   Menu,
+   MenuItem,
    Toolbar,
    Typography,
    withStyles
 } from '@material-ui/core'
-import { Search } from '@material-ui/icons'
+import { AccountCircle } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
 import PropTypes from 'prop-types'
-
 import React, { Component } from 'react'
 import styles from './styles'
 
+const menuId = 'primary-search-account-menu'
+
 class Header extends Component {
-   handleProfileMenuOpen = () => {
-      console.log('handleProfileMenuOpen')
+   constructor(props) {
+      super(props)
+      this.state = {
+         anchorEl: null
+      }
+   }
+
+   handleProfileMenuOpen = e => {
+      this.setState({ anchorEl: e.currentTarget })
+   }
+
+   handleMenuClose = e => {
+      this.setState({ anchorEl: null })
+   }
+
+   renderMenu = () => {
+      const { anchorEl } = this.state
+      const isMenuOpen = Boolean(anchorEl)
+      return (
+         <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+               vertical: 'top',
+               horizontal: 'right'
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+               vertical: 'top',
+               horizontal: 'right'
+            }}
+            open={isMenuOpen}
+            onClose={this.handleMenuClose}
+         >
+            <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+         </Menu>
+      )
+   }
+
+   handleToggleSidebar = () => {
+      const { showSidebar, onToggleSidebar } = this.props
+      onToggleSidebar(!showSidebar)
    }
 
    render() {
-      const { classes } = this.props
+      const { label } = this.props
       return (
          <Box sx={{ flexGrow: 1 }}>
             <AppBar position='static'>
@@ -31,6 +73,7 @@ class Header extends Component {
                      color='inherit'
                      aria-label='open drawer'
                      sx={{ mr: 2 }}
+                     onClick={this.handleToggleSidebar}
                   >
                      <MenuIcon />
                   </IconButton>
@@ -38,19 +81,36 @@ class Header extends Component {
                      variant='h6'
                      noWrap
                      component='div'
-                     sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                     sx={{ display: { xs: 'none', sm: 'block' } }}
                   >
-                     MUI
+                     {label}
                   </Typography>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                     <IconButton
+                        size='medium'
+                        edge='end'
+                        aria-label='account of current user'
+                        aria-controls={menuId}
+                        aria-haspopup='true'
+                        onClick={this.handleProfileMenuOpen}
+                        color='inherit'
+                     >
+                        <AccountCircle />
+                     </IconButton>
+                  </Box>
                </Toolbar>
             </AppBar>
+            {this.renderMenu()}
          </Box>
       )
    }
 }
 
 Header.propTypes = {
-   classes: PropTypes.object
+   label: PropTypes.string,
+   showSidebar: PropTypes.bool,
+   onToggleSidebar: PropTypes.func
 }
 
 export default withStyles(styles)(Header)

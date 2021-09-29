@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core'
+import { withStyles, CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
@@ -38,6 +38,7 @@ class App extends Component {
          <Provider store={store}>
             <Router>
                <ThemeProvider theme={theme}>
+                  <CssBaseline />
                   <ToastContainer autoClose={2000} />
                   <GlobalLoading />
                   <Modal />

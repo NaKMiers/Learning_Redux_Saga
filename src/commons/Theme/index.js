@@ -4,7 +4,8 @@ const theme = createTheme({
    colors: {
       primary: '#ffeb3b',
       secondary: '#91ff35',
-      error: '#f44336'
+      error: '#f44336',
+      hoverColor: 'rgba(0, 0, 0, 0.1)'
    },
    typography: {
       fontFamily: 'Tahoma'
